@@ -80,41 +80,84 @@ def evaluate_dataset(path: str, pred_col: str = "Prediction") -> dict:
         "F1": sum(f1s) / len(f1s),
     }
 
-PROMPT_TEMPLATE = "Besvar spørgsmålet med kun det direkte svar, uden forklaring.\n\nSpørgsmål: {question}\nSvar:"
+PROMPT_TEMPLATE = """
+Besvar spørgsmålet med kun det direkte svar, uden forklaring om hvorfor.
+Regelsæt:
+- Svar kun på dansk.
+- Hvis svaret er i højde, svar i meter (m).
+- Hvis svaret er i vægt, svar i kilogram (kg).
+- Hvis svaret er om en størrelse, svar i centimeter (cm). Fx Hvor stort er maleriet Mona Lisa? Svar: 77 cm x 53 cm.
+- Hvis svaret er en person angiv den måde de typisk bliver angivet på i danske tekster.
+
+\n\nSpørgsmål: {question}\nSvar:"""
+
 async def get_prediction(client, model, question, expected, max_tokens=100, temperature=0.0):
     prompt = PROMPT_TEMPLATE.format(question=question)
-    response = await client.chat.completions.create(
+    response = client.chat.completions.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
         max_tokens=max_tokens,
         temperature=temperature,
     )
-    prediction = response["choices"][0]["message"]["content"].strip()
+    print(response)
+    if 'choices' not in response or len(response.choices) == 0:
+        prediction = ""
+    else:
+        prediction = response.choices[0].message.content.strip()
 
-    return {
+    result = {
         "question": question,
         "expected": expected,
         "prediction": prediction,
-        "correct": prediction.lower() == expected.lower()
     }
+    if expected is not None:
+        res["correct"] = prediction.lower() == expected.lower()
+    return result
 
-async def run_evaluation(input_file: str, model:str, base_url: str, api_key: str, max_tokens=100, temperature=0.0) -> str:
+async def call_api(input_file: str, output_file: str, model:str, base_url: str, api_key: str, max_tokens=100, temperature=0.0, batch_size=20) -> str:
     client = openai.Client(base_url=base_url, api_key=api_key)
 
     if input_file.endswith(".csv"):
-        df = pd.read_csv(input_file)
+        df = pd.read_csv(input_file, delimiter=";")
     elif input_file.endswith(".parquet"):
         df = pd.read_parquet(input_file)
     
     tasks = []
+    results = []
     for row in df.itertuples():
-        print(f"Processing question: {row.Question}, expected: {row.Answer}")
+        print(f"Processing question: {row.Question}")
+        expected = row.Answer if hasattr(row, 'Answer') else None
         tasks.append(
-            get_prediction(client=client, model=model, question=row.Question, expected=row.Answer, max_tokens=max_tokens, temperature=temperature)
+            await get_prediction(client=client, model=model, question=row.Question, expected=expected, max_tokens=max_tokens, temperature=temperature)
         )
 
-    responses = await asyncio.gather(*tasks, return_exceptions=True)
+    for i in tqdm(range(0, len(tasks), batch_size), desc="Processing batches"):
+        batch = tasks[i:i+batch_size]
+        batch_responses = await asyncio.gather(*batch, return_exceptions=True)
+        results.extend(batch_responses)
+    
+    with open(output_file, "w") as f:
+        f.write("id;Answer\n")
+        for i, response in enumerate(results):
+            if isinstance(response, dict):
+                f.write(f"{i};{response['prediction']}\n")
+            else:
+                f.write(f"{i};Error\n")
+
     return responses
+
+def run_eval(input_file: str, output_file: str, model:str, base_url: str, api_key: str, max_tokens=100, temperature=0.0):
+    responses = asyncio.run(
+        call_api(
+            input_file=input_file,
+            output_file=output_file,
+            model=model,
+            base_url=base_url,
+            api_key=api_key,
+            max_tokens=max_tokens,
+            temperature=temperature
+        )
+    )
 
     # # for i, response in enumerate(responses):
     # #     if isinstance(response, dict):
