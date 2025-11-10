@@ -7,7 +7,7 @@ def eval(
     input: str = typer.Argument(..., help="Input string to be evaluated")
 ):
     typer.echo("Starting evaluation...")
-    result = evaluate_dataset(input)
+    result = evaluate_dataset(input, gold_path="private/v_0.2_6_SDU-Culture-1.csv")
     typer.echo(f"Evaluation result: {result}")
 
 
@@ -29,7 +29,7 @@ def run(
         base_url=base_url,
         api_key=api_key,
         max_tokens=max_tokens,
-        temperature=temperature
+        temperature=temperature,
     )
 
 

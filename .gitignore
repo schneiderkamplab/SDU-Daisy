@@ -1,5 +1,6 @@
 # DIRECTORIES THAT MUST BE KEPT OUT OF GITHUB
 SDU-Culture*
+private
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

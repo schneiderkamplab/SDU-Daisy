@@ -59,18 +59,21 @@ def qa_score_single(pred: str, gold: str, set_based=False) -> Tuple[float, float
     else:
         return set_match_score(pred, gold)
 
-def evaluate_dataset(path: str, pred_col: str = "Prediction") -> dict:
+def evaluate_dataset(path: str, gold_path: str, pred_col: str = "Answer") -> dict:
     """Evaluate a CSV or Parquet file with columns Question, Answer, Prediction."""
     if path.endswith(".csv"):
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, delimiter=";")
+        gold_df = pd.read_csv(gold_path, delimiter=";")
     elif path.endswith(".parquet"):
         df = pd.read_parquet(path)
+        gold_df = pd.read_parquet(gold_path)
     else:
         raise ValueError("File must be .csv or .parquet")
 
     ems, f1s = [], []
-    for _, row in df.iterrows():
-        gold = str(row["Answer"])
+
+    for (_, row), (_, gold_row) in zip(df.iterrows(), gold_df.iterrows()):
+        gold = str(gold_row["Answer"])
         pred = str(row[pred_col])
         em, f1 = qa_score_single(pred, gold)
         ems.append(em)
@@ -92,7 +95,7 @@ Regelsæt:
 
 \n\nSpørgsmål: {question}\nSvar:"""
 
-async def get_prediction(client, model, question, expected, max_tokens=100, temperature=0.0):
+async def get_prediction(client, model, identifier, question, expected, max_tokens=100, temperature=0.0):
     prompt = PROMPT_TEMPLATE.format(question=question)
     response = await client.chat.completions.create(
         model=model,
@@ -100,13 +103,11 @@ async def get_prediction(client, model, question, expected, max_tokens=100, temp
         max_tokens=max_tokens,
         temperature=temperature,
     )
-    print(response)
-    if 'choices' not in response or len(response.choices) == 0:
-        prediction = ""
-    else:
-        prediction = response.choices[0].message.content.strip()
+    print("response:", response)
+    prediction = response.choices[0].message.content.strip()
 
     result = {
+        "id": identifier,
         "question": question,
         "expected": expected,
         "prediction": prediction,
@@ -129,23 +130,22 @@ async def call_api(input_file: str, output_file: str, model:str, base_url: str, 
         print(f"Processing question: {row.Question}")
         expected = row.Answer if hasattr(row, 'Answer') else None
         tasks.append(
-            get_prediction(client=client, model=model, question=row.Question, expected=expected, max_tokens=max_tokens, temperature=temperature)
+            get_prediction(client=client, model=model, identifier=row.id, question=row.Question, expected=expected, max_tokens=max_tokens, temperature=temperature)
         )
 
-    for i in tqdm(range(0, len(tasks), batch_size), desc="Processing batches"):
-        batch = tasks[i:i+batch_size]
-        batch_responses = await asyncio.gather(*batch, return_exceptions=True)
-        results.extend(batch_responses)
-    
     with open(output_file, "w") as f:
         f.write("id;Answer\n")
-        for i, response in enumerate(results):
-            if isinstance(response, dict):
-                f.write(f"{i};{response['prediction']}\n")
-            else:
-                f.write(f"{i};Error\n")
 
-    return responses
+        for i in tqdm(range(0, len(tasks), batch_size), desc="Processing batches"):
+            batch = tasks[i:i+batch_size]
+            batch_responses = await asyncio.gather(*batch, return_exceptions=True)
+            results.extend(batch_responses)
+    
+            for i, response in enumerate(batch_responses):
+                if isinstance(response, dict):
+                    f.write(f"{response['id']};{response['prediction']}\n")
+                else:
+                    f.write(f"{i};Error\n")
 
 def run_eval(input_file: str, output_file: str, model:str, base_url: str, api_key: str, max_tokens=100, temperature=0.0):
     responses = asyncio.run(
@@ -159,14 +159,3 @@ def run_eval(input_file: str, output_file: str, model:str, base_url: str, api_ke
             temperature=temperature
         )
     )
-
-    # # for i, response in enumerate(responses):
-    # #     if isinstance(response, dict):
-    # #         df.at[i, "Prediction"] = response["prediction"]
-    # #         df.at[i, "Correct"] = response["correct"]
-    # #     else:
-    # #         df.at[i, "Prediction"] = "Error"
-    # #         df.at[i, "Correct"] = False
-
-
-    # return responses
