@@ -80,16 +80,15 @@ def evaluate_dataset(path: str, gold_path: str, pred_col: str = "Answer") -> dic
         raise ValueError("File must be .csv or .parquet")
 
     ems, f1s, bleus = [], [], []
-    #for (_, row), (_, gold_row) in zip(df.iterrows(), gold_df.iterrows()):
     for (_, row) in df.iterrows():
-        # gold = str(gold_row["Answer"])
         gold = gold_df.loc[gold_df["id"] == row["id"], "Answer"].values[0]
+        print("Gold:", gold)
         pred = str(row[pred_col])
         em, f1 = qa_score_single(pred, gold)
-        bleu_score = bleu_score(pred, gold)
+        b_score = bleu_score(pred, gold)
         ems.append(em)
         f1s.append(f1)
-        bleus.append(bleu_score)
+        bleus.append(b_score)
 
     return {
         "EM": sum(ems) / len(ems),
