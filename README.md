@@ -42,7 +42,7 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
 ---
 
 # SDU Daisy Evaluations 
-<table style="width:100%; border-collapse:collapse;">
+<!-- <table style="width:100%; border-collapse:collapse;">
   <tr>
     <th style="text-align:left;">Model</th>
     <th style="text-align:center;">F1 Score</th>
@@ -72,3 +72,68 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
     <td style="text-align:center;">1.0</td>
   </tr>
 </table>
+ -->
+<style>
+  .futuristic-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: system-ui, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0,255,255,0.15);
+  }
+  .futuristic-table th {
+    background: rgba(9,21,54,1.0); linear-gradient(135deg, #cf1846ff, #2421d1ff);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(255,255,255,0.4);
+  }
+  .futuristic-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .futuristic-table tr:nth-child(even) {
+    background: rgba(255,255,255,0.03);
+  }
+  .futuristic-table tr:hover {
+    background: rgba(0,255,255,0.08);
+    transition: 0.2s;
+  }
+</style>
+
+<table class="futuristic-table">
+  <tr>
+    <th>Model</th>
+    <th>F1 Score</th>
+    <th>Bleu</th>
+    <th>Dataset version</th>
+    <th>Prompt Template Version</th>
+  </tr>
+  <tr>
+    <td style="text-align:left;">openai/gpt-oss-20b</td>
+    <td>-</td>
+    <td>-</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td style="text-align:left;">openai/gpt-oss-120b</td>
+    <td>-</td>
+    <td>-</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td style="text-align:left;">google/gemma-3-27b-it</td>
+    <td>-</td>
+    <td>-</td>
+    <td>1.0</td>
+    <td>1.0</td>
+  </tr>
+</table>
+
