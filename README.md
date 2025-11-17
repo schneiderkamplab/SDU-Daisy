@@ -10,6 +10,40 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
 
 ---
 
+# SDU Daisy Evaluations 
+<table style="width:100%; border-collapse:collapse;">
+  <tr>
+    <th style="text-align:left;">Model</th>
+    <th style="text-align:center;">Bleu Score</th>
+    <th style="text-align:center;">F1 Score</th>
+    <th style="text-align:center;">Dataset version</th>
+    <th style="text-align:center;">Prompt Template Version</th>
+  </tr>
+  <tr>
+    <td>openai/gpt-oss-20b</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
+  </tr>
+  <tr>
+    <td>openai/gpt-oss-120b</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
+  </tr>
+  <tr>
+    <td>google/gemma-3-27b-it</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
+  </tr>
+</table>
+
+---
+
 ## Why this dataset?  
 
 - **Cultural Relevance Test** – The Canon provides a well-defined cultural benchmark for evaluation.  
@@ -40,36 +74,3 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
 - Encouraging critical reflection on the **boundaries of cultural knowledge** encoded in AI systems  
 
 ---
-
-# SDU Daisy Evaluations 
-<table style="width:100%; border-collapse:collapse;">
-  <tr>
-    <th style="text-align:left;">Model</th>
-    <th style="text-align:center;">F1 Score</th>
-    <th style="text-align:center;">Bleu Score</th>
-    <th style="text-align:center;">Dataset version</th>
-    <th style="text-align:center;">Prompt Template Version</th>
-  </tr>
-  <tr>
-    <td>openai/gpt-oss-20b</td>
-    <td style="text-align:center;">-</td>
-    <td style="text-align:center;">-</td>
-    <td style="text-align:center;">1.0</td>
-    <td style="text-align:center;">1.0</td>
-  </tr>
-  <tr>
-    <td>openai/gpt-oss-120b</td>
-    <td style="text-align:center;">-</td>
-    <td style="text-align:center;">-</td>
-    <td style="text-align:center;">1.0</td>
-    <td style="text-align:center;">1.0</td>
-  </tr>
-  <tr>
-    <td>google/gemma-3-27b-it</td>
-    <td style="text-align:center;">-</td>
-    <td style="text-align:center;">-</td>
-    <td style="text-align:center;">1.0</td>
-    <td style="text-align:center;">1.0</td>
-  </tr>
-</table>
-
