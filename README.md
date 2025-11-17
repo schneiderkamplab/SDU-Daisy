@@ -1,6 +1,6 @@
 # SDUs Daisy: A Benchmark for Danish Culture 
 <p align="center">
-  <img src="docs/daisy_logo.png" alt="Description" width="250"/>
+  <img src="docs/daisy_logo.png" alt="Description" width="300"/>
 </p>
 
 
@@ -42,36 +42,34 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
 ---
 
 # SDU Daisy Evaluations 
-<table style="width:100%; border-collapse:collapse; font-family:sans-serif; color: white; background:rgba(9, 21, 54, 1) ; border:1px solid rgba(119, 158, 203, 1);">
-  <tr style="background:rgba(9, 21, 54, 1); color:white">
-    <th style="padding:10px; text-align:left; color:white;">Model</th>
-    <th style="padding:10px;">F1 Score</th>
-    <th style="padding:10px;">Bleu</th>
-    <th style="padding:10px;">Dataset Version</th>
-    <th style="padding:10px;">Prompt Template Version</th>
+<table style="width:100%; border-collapse:collapse;">
+  <tr>
+    <th style="text-align:left;">Model</th>
+    <th style="text-align:center;">F1 Score</th>
+    <th style="text-align:center;">Bleu Score</th>
+    <th style="text-align:center;">Dataset version</th>
+    <th style="text-align:center;">Prompt Template Version</th>
   </tr>
-
-  <tr style="background:#161b22;">
-    <td style="padding:10px; text-align:left;">openai/gpt-oss-20b</td>
-    <td style="padding:10px; text-align:center;">-</td>
-    <td style="padding:10px; text-align:center;">-</td>
-    <td style="padding:10px; text-align:center;">1.0</td>
-    <td style="padding:10px; text-align:center;">1.0</td>
+  <tr>
+    <td>openai/gpt-oss-20b</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
   </tr>
-
-  <tr style="background:#0f131a;">
-    <td style="padding:10px; text-align:left;">openai/gpt-oss-120b</td>
-    <td style="padding:10px; text-align:center;">-</td>
-    <td style="padding:10px; text-align:center;">-</td>
-    <td style="padding:10px; text-align:center;">1.0</td>
-    <td style="padding:10px; text-align:center;">1.0</td>
+  <tr>
+    <td>openai/gpt-oss-120b</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
   </tr>
-
-  <tr style="background:#161b22;">
-    <td style="padding:10px; text-align:left;">google/gemma-3-27b-it</td>
-    <td style="padding:10px; text-align:center;">-</td>
-    <td style="padding:10px; text-align:center;">-</td>
-    <td style="padding:10px; text-align:center;">1.0</td>
-    <td style="padding:10px; text-align:center;">1.0</td>
+  <tr>
+    <td>google/gemma-3-27b-it</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">-</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
   </tr>
 </table>
+
