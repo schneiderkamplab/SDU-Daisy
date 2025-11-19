@@ -40,6 +40,13 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
     <td style="text-align:center;">1.0</td>
     <td style="text-align:center;">1.0</td>
   </tr>
+  <tr>
+    <td>meta-llama/Llama-3.3-70B-Instruct</td>
+    <td style="text-align:center;">0.166</td>
+    <td style="text-align:center;">0.268</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
+  </tr>
 </table>
 
 ---
