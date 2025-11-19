@@ -47,6 +47,13 @@ The Canon highlights 108 works across literature, music, visual arts, architectu
     <td style="text-align:center;">1.0</td>
     <td style="text-align:center;">1.0</td>
   </tr>
+  <tr>
+    <td>mistralai/Mistral-Small-3.1-24B-Instruct-2503-</td>
+    <td style="text-align:center;">0.124</td>
+    <td style="text-align:center;">0.202</td>
+    <td style="text-align:center;">1.0</td>
+    <td style="text-align:center;">1.0</td>
+  </tr>
 </table>
 
 ---
